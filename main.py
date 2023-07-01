@@ -32,10 +32,10 @@
 #         print("////////")
 
 
-from requests import get
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+# from requests import get
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.service import Service
 """
 # from webdriver_manager.chrome import ChromeDriverManager
 
@@ -50,10 +50,28 @@ browser.get("https://www.indeed.com/jobs?q=python&limit=50")
 print(browser.page_source)
 # browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options = chrome_options)
 """
+
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from bs4 import BeautifulSoup
+
 options = Options()
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 options.add_experimental_option("detach", True)  # 브라우저 꺼짐 방지 코드
 browser = webdriver.Chrome(options=options)
 browser.get(
-    'https://kr.indeed.com/jobs?q=python&l=&from=searchOnHP&vjk=89395b6ac5014113')
+    'https://kr.indeed.com/jobs?q=python')
 
-print(browser.page_source)
+soup = BeautifulSoup(browser.page_source, "html.parser")
+job_list = soup.find("ul", class_="jobsearch-ResultsList")
+
+jobs = job_list.find_all('li', recursive=False)
+
+for job in jobs:
+    zone = job.find("div", class_="mosaic-zone")
+    if zone == None:
+        print("job li")
+    else:
+        print("mosaic li")
