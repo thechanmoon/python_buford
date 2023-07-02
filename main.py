@@ -61,17 +61,37 @@ options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_experimental_option("detach", True)  # 브라우저 꺼짐 방지 코드
 browser = webdriver.Chrome(options=options)
-browser.get(
-    'https://kr.indeed.com/jobs?q=python')
+# browser.get('https://kr.indeed.com/jobs?q=python')
+browser.get('https://www.indeed.com/jobs?q=python')
 
 soup = BeautifulSoup(browser.page_source, "html.parser")
 job_list = soup.find("ul", class_="jobsearch-ResultsList")
-
 jobs = job_list.find_all('li', recursive=False)
 
+# print(jobs)
+results = []
 for job in jobs:
     zone = job.find("div", class_="mosaic-zone")
+
     if zone == None:
-        print("job li")
-    else:
-        print("mosaic li")
+        # print("job li")
+        anchor = job.select_one("h2 a")
+        title = anchor['aria-label']
+        link = anchor['href']
+        company = job.find('span', class_='companyName')
+        loction = job.find('div', class_="companyLocation")
+
+        job_data = {
+            'link': f'https://www.indeed.com{link}',
+            'company': company.string,
+            'loctation': loction.string,
+            'postion': title,
+
+        }
+        results.append(job_data)
+        # print(title, link)
+        # print("/////\n//////")
+    # else:
+    #     print("mosaic li")
+for result in results:
+    print(result, "\n/////\n")
