@@ -72,7 +72,7 @@ def get_page_count(keyword):
     # print("test : ", soup)
     pagenation = soup.find('nav', class_='ecydgvn0')
     pages = pagenation.find_all("div", recursive=False)
-    print("test 1 : ", pages)
+    # print("test 1 : ", pages)
     print(len(pages))
 
 
