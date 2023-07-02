@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 # from selenium.webdriver.chrome.options import Options
 
 
-def extract_jobs(keyword):
+def extract_wwr_jobs(keyword):
     base_url = "https://weworkremotely.com/remote-jobs/search?search_uuid=&term="
 # search_term = "python"
     search_term = keyword
