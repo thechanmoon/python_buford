@@ -31,14 +31,18 @@ def get_page_count(keyword):
 
 def extract_indeed_jobs(keyword):
     pages = get_page_count(keyword)
+    print("Found", pages, "pages")
     base_url = 'https://www.indeed.com/jobs'
+    results = []
     for page in range(pages):
         options = Options()
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_experimental_option("detach", True)  # 브라우저 꺼짐 방지 코드
         browser = webdriver.Chrome(options=options)
-        browser.get(f'{base_url}?q={keyword}')
+        final_url = f'{base_url}?q={keyword}&start={page*10}'
+        print("Requesting", final_url)
+        browser.get(final_url)
         # if browser.get(f'https://www.indeed.com/jobs?q={keyword}') != None:
         #     print("Can't connect")
         # else:
@@ -47,7 +51,7 @@ def extract_indeed_jobs(keyword):
         jobs = job_list.find_all('li', recursive=False)
 
         # print(jobs)
-        results = []
+
         for job in jobs:
             zone = job.find("div", class_="mosaic-zone")
 
@@ -71,13 +75,15 @@ def extract_indeed_jobs(keyword):
                 # print("/////\n//////")
             # else:
             #     print("mosaic li")
-        return results
+    return results
 
 
 results = extract_indeed_jobs("python")
 
-for result in results:
-    print(result, "\n/////\n")
+print(results)
+print(len(results))
+# for result in results:
+#     print(result, "\n/////\n")
 
 # print(get_page_count("python"))
 # print(get_page_count("java"))
