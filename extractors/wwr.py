@@ -33,8 +33,9 @@ def extract_wwr_jobs(keyword):
                 # print(company.string, kind.string, region.string, title.string)
                 job_data = {
                     'company': company.string,
-                    'region': region.string,
-                    'postion': title.string
+                    'location': region.string,
+                    'position': title.string,
+                    'link': f'https://www.indeed.com{link}'
                 }
 
                 results.append(job_data)

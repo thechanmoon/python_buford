@@ -60,15 +60,16 @@ def extract_indeed_jobs(keyword):
                 # print("job li")
                 anchor = job.select_one("h2 a")
                 title = anchor['aria-label']
+                title = title.replace('full details of', '')
                 link = anchor['href']
                 company = job.find('span', class_='companyName')
-                loction = job.find('div', class_="companyLocation")
+                location = job.find('div', class_="companyLocation")
 
                 job_data = {
                     'link': f'https://www.indeed.com{link}',
                     'company': company.string,
-                    'loctation': loction.string,
-                    'postion': title,
+                    'location': location.string,
+                    'position': title,
 
                 }
                 results.append(job_data)
