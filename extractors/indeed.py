@@ -61,14 +61,20 @@ def extract_indeed_jobs(keyword):
                 anchor = job.select_one("h2 a")
                 title = anchor['aria-label']
                 title = title.replace('full details of', '')
+                title = title.replace(',', ' ')
                 link = anchor['href']
+                # link = link.replace(',', '\n')
                 company = job.find('span', class_='companyName')
+                company = company.string.replace(',', ' ')
                 location = job.find('div', class_="companyLocation")
-
+                try:
+                    location = location.string.replace(',', ' ')
+                except (TypeError, AttributeError):
+                    location = ' '
                 job_data = {
                     'link': f'https://www.indeed.com{link}',
-                    'company': company.string,
-                    'location': location.string,
+                    'company': company,
+                    'location': location,
                     'position': title,
 
                 }
